@@ -5,6 +5,7 @@ import ru.cotarius.springcourse.springHomework03.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 public class BookRepository {
@@ -28,5 +29,8 @@ public class BookRepository {
     }
     public List<Book> getAllBooks(){
         return books;
+    }
+    public boolean deleteBook(Book book){
+        return books.removeIf(b -> b.equals(book));
     }
 }

@@ -2,6 +2,7 @@ package ru.cotarius.springcourse.springHomework03.repository;
 
 import lombok.Data;
 import org.springframework.stereotype.Repository;
+import ru.cotarius.springcourse.springHomework03.model.Book;
 import ru.cotarius.springcourse.springHomework03.model.Reader;
 
 import java.util.ArrayList;
@@ -22,5 +23,14 @@ public class ReaderRepository {
 
     public Reader getById(long id){
         return readers.stream().filter(reader -> reader.getId() == id).findFirst().orElse(null);
+    }
+    public void addReader(Reader reader){
+        readers.add(reader);
+    }
+    public List<Reader> getAllReaders(){
+        return readers;
+    }
+    public boolean deleteReader(Reader reader){
+        return readers.removeIf(b -> b.equals(reader));
     }
 }

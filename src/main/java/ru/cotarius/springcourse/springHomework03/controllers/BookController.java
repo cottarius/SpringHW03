@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/book")
 @Slf4j
 public class BookController {
-    private BookService bookService;
+    private final BookService bookService;
 
     @Autowired
     public BookController(BookService bookService) {
@@ -44,7 +44,7 @@ public class BookController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable long id){
+    public ResponseEntity<?> getBookById(@PathVariable long id){
         log.info("Поступил запрос на выдачу информации о книге с Id: " + id);
 
         try {
@@ -52,5 +52,14 @@ public class BookController {
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();
         }
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteBookById(@PathVariable long id){
+        final boolean deleted = bookService.deleteBook(id);
+        log.info("Поступил запрос на удаление книги с Id: " + id);
+
+        return deleted
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
