@@ -77,7 +77,7 @@ public class IssueService {
      * @return
      */
     public boolean check(long id){
-        int countOfBooks = 0;
+        int countOfBooks = 1;
         for(Issue issue : issueRepository.getAllIssues()){
             if(issue.getReaderId() == id){
                 countOfBooks++;
