@@ -1,11 +1,15 @@
 package ru.cotarius.springcourse.springHomework03.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.cotarius.springcourse.springHomework03.controllers.IssueRequest;
 import ru.cotarius.springcourse.springHomework03.exceptions.BookHasBeenReturnedException;
 import ru.cotarius.springcourse.springHomework03.exceptions.AllreadyHaveBook;
+import ru.cotarius.springcourse.springHomework03.exceptions.MoreThanAllowedBooksException;
 import ru.cotarius.springcourse.springHomework03.model.Issue;
 import ru.cotarius.springcourse.springHomework03.repository.BookRepository;
 import ru.cotarius.springcourse.springHomework03.repository.IssueRepository;
@@ -18,10 +22,15 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @Slf4j
 @Service
+@PropertySource("classpath:application.properties")
 public class IssueService {
     private final BookRepository bookRepository;
     private final IssueRepository issueRepository;
     private final ReaderRepository readerRepository;
+
+    @Setter
+    @Value("${application.issue.max-allowed-books:1}")
+    private int max_allowed_books;
 
     /**
      * Возрат книги в библиотеку
@@ -45,10 +54,11 @@ public class IssueService {
             log.info("Не удалось найти читателя: " + issueRequest.getReaderId());
             throw new NoSuchElementException("Не удалось найти читателя: " + issueRequest.getReaderId());
         }
-        if(issueRepository.check(issueRequest.getReaderId())){
-            log.info("У читателя {} уже есть на руках книга!", issueRequest.getReaderId());
-            throw new AllreadyHaveBook("У читателя " + issueRequest.getReaderId() + "уже есть на руках книга!");
+        if(!check(issueRequest.getReaderId())){
+            log.info("У читателя с id={} превышено допустимое значение хранения книг", issueRequest.getReaderId());
+            throw new MoreThanAllowedBooksException("Превышено допустимое количество книг, разрешённых к выдаче");
         }
+
 
         Issue issue = new Issue(issueRequest.getBookId(), issueRequest.getReaderId());
         issueRepository.createIssue(issue);
@@ -59,5 +69,23 @@ public class IssueService {
     }
     public List<Issue> getAllIssues(){
         return issueRepository.getAllIssues();
+    }
+
+    /**
+     * Проверка, что у читателя максимально допустимое количество книг
+     * @param id id читателя
+     * @return
+     */
+    public boolean check(long id){
+        int countOfBooks = 0;
+        for(Issue issue : issueRepository.getAllIssues()){
+            if(issue.getReaderId() == id){
+                countOfBooks++;
+                if(countOfBooks > max_allowed_books){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

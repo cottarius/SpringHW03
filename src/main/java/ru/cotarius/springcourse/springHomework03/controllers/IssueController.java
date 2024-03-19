@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.cotarius.springcourse.springHomework03.exceptions.BookHasBeenReturnedException;
 import ru.cotarius.springcourse.springHomework03.exceptions.AllreadyHaveBook;
+import ru.cotarius.springcourse.springHomework03.exceptions.MoreThanAllowedBooksException;
 import ru.cotarius.springcourse.springHomework03.model.Issue;
 import ru.cotarius.springcourse.springHomework03.services.IssueService;
 
@@ -54,7 +55,7 @@ public class IssueController {
             return ResponseEntity.status(HttpStatus.CREATED).body(issueService.createIssue(issueRequest));
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();
-        } catch (AllreadyHaveBook e){
+        } catch (AllreadyHaveBook | MoreThanAllowedBooksException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }

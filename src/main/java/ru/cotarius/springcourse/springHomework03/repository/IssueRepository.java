@@ -31,13 +31,5 @@ public class IssueRepository {
         return issues;
     }
 
-    /**
-     * Проверка, что у читателя на руках есть/нет книг
-     * @param id id читателя
-     * @return
-     */
-    public boolean check(long id){
-       return issues.stream().anyMatch(issue -> issue.getReaderId() == id);
-//        return issues.stream().anyMatch(issue -> issue.getReaderId() == id && issue.getReturned_at() == null);
-    }
+
 }
