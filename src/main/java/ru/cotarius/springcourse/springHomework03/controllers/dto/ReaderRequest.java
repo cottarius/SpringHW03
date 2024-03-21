@@ -1,4 +1,4 @@
-package ru.cotarius.springcourse.springHomework03.controllers;
+package ru.cotarius.springcourse.springHomework03.controllers.dto;
 
 import lombok.Data;
 

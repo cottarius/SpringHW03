@@ -1,4 +1,4 @@
-package ru.cotarius.springcourse.springHomework03.controllers;
+package ru.cotarius.springcourse.springHomework03.controllers.bookcontrollers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class BookController {
         }
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBookById(@PathVariable long id){
+    public ResponseEntity<Boolean> deleteBookById(@PathVariable long id){
         final boolean deleted = bookService.deleteBook(id);
         log.info("Поступил запрос на удаление книги с Id: " + id);
 

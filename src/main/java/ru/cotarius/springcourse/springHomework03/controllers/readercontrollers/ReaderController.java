@@ -1,10 +1,11 @@
-package ru.cotarius.springcourse.springHomework03.controllers;
+package ru.cotarius.springcourse.springHomework03.controllers.readercontrollers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.cotarius.springcourse.springHomework03.controllers.dto.ReaderRequest;
 import ru.cotarius.springcourse.springHomework03.model.Issue;
 import ru.cotarius.springcourse.springHomework03.model.Reader;
 import ru.cotarius.springcourse.springHomework03.services.ReaderService;
