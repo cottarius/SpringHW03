@@ -74,7 +74,7 @@ public class ReaderController {
         }
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteReaderById(@PathVariable long id){
+    public ResponseEntity<Boolean> deleteReaderById(@PathVariable long id){
         final boolean deleted = readerService.deleteReader(id);
         log.info("Поступил запрос на удаление пользователя с Id: " + id);
 
