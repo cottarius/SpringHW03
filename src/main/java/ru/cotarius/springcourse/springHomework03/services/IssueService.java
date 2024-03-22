@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import ru.cotarius.springcourse.springHomework03.controllers.dto.IssueRequest;
 import ru.cotarius.springcourse.springHomework03.exceptions.BookHasBeenReturnedException;
 import ru.cotarius.springcourse.springHomework03.exceptions.MoreThanAllowedBooksException;
+import ru.cotarius.springcourse.springHomework03.model.Book;
 import ru.cotarius.springcourse.springHomework03.model.Issue;
+import ru.cotarius.springcourse.springHomework03.model.Reader;
 import ru.cotarius.springcourse.springHomework03.repository.BookRepository;
 import ru.cotarius.springcourse.springHomework03.repository.IssueRepository;
 import ru.cotarius.springcourse.springHomework03.repository.ReaderRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -30,6 +33,20 @@ public class IssueService {
     @Setter
     @Value("${application.issue.max-allowed-books:1}")
     private int max_allowed_books;
+
+    public Reader getReader(long id){
+        return readerRepository.getAllReaders().stream().filter(reader -> reader.getId() == id).findFirst().orElse(null);
+    }
+
+    public List<Book> booksThatReaderHas(Reader reader){
+        List<Book> books = new ArrayList<>();
+        for (Issue issue : issueRepository.getAllIssues()){
+            if (issue.getReaderId() == reader.getId()){
+                books.add(bookRepository.getAllBooks().get((int) issue.getBookId()));
+            }
+        }
+        return books;
+    }
 
     /**
      * Возрат книги в библиотеку
