@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.cotarius.springcourse.springHomework03.model.Issue;
 import ru.cotarius.springcourse.springHomework03.model.Reader;
 import ru.cotarius.springcourse.springHomework03.repository.IssueRepository;
-import ru.cotarius.springcourse.springHomework03.repository.ReaderRepository;
+import ru.cotarius.springcourse.springHomework03.repository.JpaReaderRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,26 +15,26 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ReaderService {
-    private final ReaderRepository readerRepository;
+    private final JpaReaderRepository readerRepository;
     private final IssueRepository issueRepository;
 
     public Reader createReader(String firstName, String lastName) {
         Reader reader = new Reader(firstName, lastName);
-        readerRepository.addReader(reader);
+        readerRepository.save(reader);
         return reader;
     }
 
     public Reader getReaderById(long id) {
-       return readerRepository.getById(id);
+       return readerRepository.getReferenceById(id);
     }
 
     public List<Reader> getAllReaders() {
-        return readerRepository.getAllReaders();
+        return readerRepository.findAll();
     }
 
-    public boolean deleteReader(long id) {
-        Reader reader = readerRepository.getById(id);
-        return readerRepository.deleteReader(reader);
+    public void deleteReader(long id) {
+        Reader reader = readerRepository.getReferenceById(id);
+        readerRepository.delete(reader);
     }
 
     /**

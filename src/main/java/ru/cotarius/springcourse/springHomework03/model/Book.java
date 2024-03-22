@@ -1,17 +1,25 @@
 package ru.cotarius.springcourse.springHomework03.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
+@Entity
+@Table(name = "book")
 @Data
 public class Book {
-    private static long GEN_ID;
 
-    private final long id;
-    private final String name;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public Book(String name) {
-        this.id = GEN_ID++;
-        this.name = name;
+    @Column(name = "title")
+    private String name;
+
+    public Book() {
     }
 
+    public Book(String name) {
+        this.name = name;
+    }
 }
